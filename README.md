@@ -23,7 +23,7 @@ A mobile friendly and progressive enhanced image carousel
 
 Progressive Carousel has a **consistent user experience** across different screen sizes, and on portrait/landscape orientation. There is no predefined amount of images for each breakpoint. 
 
-On smaller screens, it shows a tiny bit of the next and previous image. This gives the user a hint that he can swipe the images left and right. 
+On smaller screens, a tiny bit of the next and previous image is visible. This gives the user a hint that he can swipe the images left and right. 
 
 On larger screens, more images are visible in the image strip. Although the carousel can be nested in a single column layout, it is recommended to show the images on full width of the page, maximizing available screen space.
 
@@ -82,7 +82,7 @@ Explanation:
   
      This allows the user to navigate to the high resolution image when the carousel is not enhanced with JavaScript. When? While JavaScript is loading, on browsers not meeting the minimum criteria or when JavaScript is disabled. [Everyone has Javascript, right](https://kryogenix.org/code/browser/everyonehasjs.html)? 
 * `<img>`
-  *  `src`: _url_ of fallback image for browsers [not supporting 'srcset'](http://caniuse.com/#search=srcset).
+  *  `src`: _url_ of the fallback image for browsers [not supporting 'srcset'](http://caniuse.com/#search=srcset).
      * In fullscreen mode, the carousel will replace the `src` value with the url of the image with the highest resolution (as specified in `srcset`). This allows browsers not supporting `srcset` to still show high resultion images in fullscreen mode. 
   *  `srcset`: list of responsive images and their natural width, so that browsers can choose the appropriate image ([srcset and sizes explanation](https://jakearchibald.com/2015/anatomy-of-responsive-images/#varying-size-and-density)). 
       * The example lists 4 images, but any number works. The browser will choose to load an image based on resolution and device-pixel-ratio. Providing enough images can save the user precious time and bandwidth.
@@ -131,7 +131,9 @@ Carousel.enhanceAll();
 When installed correctly, the JavaScript module has set the `is-enhanced` class on the root element of the carousel:
 
 ```html
-<div class="carousel is-enhanced" data-carousel>...</div>
+<div class="carousel is-enhanced" data-carousel>
+  ...
+</div>
 ```
 
 
