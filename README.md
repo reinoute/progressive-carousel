@@ -93,7 +93,7 @@ Explanation:
 
 ### CSS
 
-You can find boilerplate CSS here to get you started. 
+You can find boilerplate CSS [here](./demo/index.css) to get you started. 
 
 Typical things you may want to customize:
 
@@ -136,8 +136,16 @@ When installed correctly, the JavaScript module has set the `is-enhanced` class 
 </div>
 ```
 
+## Future
 
+- Simplify markup with listbox aria-attributes (a la Bootstrap Carousel)?
+- Lazy loading of images
+- Loading indicator (in particular in fullscreen)
 
+Not planned:
+
+- Captions
+- Breadcrumbs / circles / progress indicators
 
  
 

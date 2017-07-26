@@ -1,0 +1,122 @@
+<html>
+<head>
+    <title>Progressive Carousel Demo</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="demo/index.css" rel="stylesheet">
+    <script src="demo/index.js" async defer></script>
+</head>
+<body>
+<style type="text/css">
+    body {
+        margin: 0;
+        font-family: sans-serif;
+    }
+
+    section {
+        max-width: 700px;
+        margin: 0 auto;
+        padding: 48px 16px;
+    }
+
+    ul {
+        padding-left: 20px;
+    }
+</style>
+<section>
+    <h1>Progressive Carousel</h1>
+    <ul>
+        <li>Swipe an image or drag it with your mouse to cycle through the carousel</li>
+        <li>Resize your browser to see how images with different resolutions are being loaded</li>
+        <li>Click an image to open fullscreen and view the high resolution image</li>
+        <li>Use the keyboard (TAB-key) to use the next/previous buttons and toggle fullscreen mode. In fullscreen mode, press the arrow keys to cycle through images.</li>
+        <li>Disable JavaScript to see a list of thumbnails. Click on a thumbnail to go to the high resolution image.</li>
+    </ul>
+</section>
+<div class="carousel" data-carousel>
+    <button class="carousel-close" data-carousel-close>CLOSE</button>
+    <button class="carousel-previous" aria-label="Previous" data-carousel-previous>◀</button>
+    <ul class="carousel-list" data-carousel-list>
+        <li class="carousel-item" data-carousel-item>
+            <a class="carousel-anchor" href="demo/images/1-xl.jpg" data-carousel-anchor>
+                <img class="carousel-img"
+                     src="demo/images/1-m.jpg"
+                     srcset="demo/images/1-s.jpg 300w,
+                             demo/images/1-m.jpg 600w,
+                             demo/images/1-l.jpg 968w,
+                             demo/images/1-xl.jpg 2560w"
+                     sizes="(min-width: 1170px) 968px, 85vw"
+                     alt="Example image 1"
+                     data-carousel-img>
+            </a>
+        </li>
+        <li class="carousel-item" data-carousel-item>
+            <a class="carousel-anchor" href="demo/images/2-xl.jpg" data-carousel-anchor>
+                <img class="carousel-img"
+                     src="demo/images/2-m.jpg"
+                     srcset="demo/images/2-s.jpg 300w,
+                             demo/images/2-m.jpg 600w,
+                             demo/images/2-l.jpg 968w,
+                             demo/images/2-xl.jpg 2560w"
+                     sizes="(min-width: 1170px) 968px, 85vw"
+                     alt="Example image 2"
+                     data-carousel-img>
+            </a>
+        </li>
+        <li class="carousel-item" data-carousel-item>
+            <a class="carousel-anchor" href="demo/images/3-xl.jpg" data-carousel-anchor>
+                <img class="carousel-img"
+                     src="demo/images/3-m.jpg"
+                     srcset="demo/images/3-s.jpg 300w,
+                             demo/images/3-m.jpg 600w,
+                             demo/images/3-l.jpg 968w,
+                             demo/images/3-xl.jpg 2560w"
+                     sizes="(min-width: 1170px) 968px, 85vw"
+                     alt="Example image 1"
+                     data-carousel-img>
+            </a>
+        </li>
+        <li class="carousel-item" data-carousel-item>
+            <a class="carousel-anchor" href="demo/images/4-xl.jpg" data-carousel-anchor>
+                <img class="carousel-img"
+                     src="demo/images/4-m.jpg"
+                     srcset="demo/images/4-s.jpg 300w,
+                             demo/images/4-m.jpg 600w,
+                             demo/images/4-l.jpg 968w,
+                             demo/images/4-xl.jpg 2560w"
+                     sizes="(min-width: 1170px) 968px, 85vw"
+                     alt="Example image 1"
+                     data-carousel-img>
+            </a>
+        </li>
+        <li class="carousel-item" data-carousel-item>
+            <a class="carousel-anchor" href="demo/images/5-xl.jpg" data-carousel-anchor>
+                <img class="carousel-img"
+                     src="demo/images/5-m.jpg"
+                     srcset="demo/images/5-s.jpg 300w,
+                             demo/images/5-m.jpg 600w,
+                             demo/images/5-l.jpg 968w,
+                             demo/images/5-xl.jpg 2560w"
+                     sizes="(min-width: 1170px) 968px, 85vw"
+                     alt="Example image 1"
+                     data-carousel-img>
+            </a>
+        </li>
+        <li class="carousel-item" data-carousel-item>
+            <a class="carousel-anchor" href="demo/images/6-xl.jpg" data-carousel-anchor>
+                <img class="carousel-img"
+                     src="demo/images/6-m.jpg"
+                     srcset="demo/images/6-s.jpg 300w,
+                             demo/images/6-m.jpg 600w,
+                             demo/images/6-l.jpg 968w,
+                             demo/images/6-xl.jpg 2560w"
+                     sizes="(min-width: 1170px) 968px, 85vw"
+                     alt="Example image 1"
+                     data-carousel-img>
+            </a>
+        </li>
+    </ul>
+    <button class="carousel-next" aria-label="Next" data-carousel-next>▶</button>
+</div>
+</body>
+</html>
