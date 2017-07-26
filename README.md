@@ -2,7 +2,7 @@
 
 A mobile friendly and progressive enhanced image carousel
 
-[Demo](http://someurl)
+[Demo](http://reinout.com/progressive-carousel)
 
 ## Features
 
