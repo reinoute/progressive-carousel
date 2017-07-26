@@ -6,7 +6,7 @@
 }
 
 .carousel.is-fullscreen {
-    /* stretch the 100% browser width/height */
+    /* stretch to 100% browser width/height */
     position: fixed;
     top: 0;
     right: 0;
@@ -38,6 +38,7 @@
 
 .carousel-item {
     display: inline-block;
+    /* add some spacing between items */
     margin-right: 2%;
     /*
      * Initially, position each item 200% of it's own width to the left,
