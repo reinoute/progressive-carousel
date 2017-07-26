@@ -17,6 +17,14 @@
 
 .carousel-list {
     list-style: none;
+    /* clear whitespace around .carousel-item */
+    font-size: 0;
+    /* center align thumbnails when not enhanced with JavaScript */
+    text-align: center;
+}
+
+.carousel.is-enhanced .carousel-list {
+    list-style: none;
     /* show a tiny bit of the image positioned outside the viewport */
     padding-left: 3%;
     /* place items on 1 line */
@@ -40,6 +48,9 @@
     display: inline-block;
     /* add some spacing between items */
     margin-right: 2%;
+}
+
+.carousel.is-enhanced .carousel-item {
     /*
      * Initially, position each item 200% of it's own width to the left,
      * so that they can animate back into the viewport again
@@ -47,17 +58,17 @@
     transform: translateX(-200%);
 }
 
-.carousel-item.is-animating-left {
+.carousel.is-enhanced .carousel-item.is-animating-left {
     transition: transform 0.2s ease-out;
     transform: translateX(-300%); /* default - 100% */
 }
 
-.carousel-item.is-animating-right {
+.carousel.is-enhanced .carousel-item.is-animating-right {
     transition: transform 0.2s ease-out;
     transform: translateX(-100%); /* default + 100% */
 }
 
-.carousel-item.is-animating-initial {
+.carousel.is-enhanced .carousel-item.is-animating-initial {
     /* animate back to initial state */
     transition: transform 0.2s ease-out;
 }
@@ -67,24 +78,36 @@
     margin-right: 0;
 }
 
-.carousel.is-fullscreen .carousel-img {
-    /*
-     * Show image on full width of the browser, but
-     * don't stretch it further than it's own natural width
-     */
-    width: 100%;
+.carousel-img {
+    /* limit thumbnail width when not enhanced with JavaScript */
+    max-width: 300px;
+}
+
+.carousel.is-enhanced .carousel-img {
+    /* don't stretch img further than it's own natural width */
     max-width: 100%;
+}
+
+.carousel.is-fullscreen .carousel-img {
+    /* show image on full width of the browser */
+    width: 100%;
 }
 
 .carousel-previous,
 .carousel-next,
 .carousel-close {
+    display: none; /* hide when not enhanced with JS */
     position: absolute;
     color: white;
     background-color: black; /* fallback */
     background-color: rgba(0, 0, 0, 0.75);
     cursor: pointer;
     z-index: 1;
+}
+
+.carousel.is-enhanced .carousel-previous,
+.carousel.is-enhanced .carousel-next {
+    display: block; /* show next/previous when enhanced with JS */
 }
 
 .carousel-previous,
@@ -105,7 +128,6 @@
 }
 
 .carousel-close {
-    display: none; /* hide if not in fullscreen */
     top: -2px;
     /* horizontally center */
     left: 50%;
