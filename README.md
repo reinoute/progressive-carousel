@@ -4,6 +4,8 @@ A mobile friendly and progressive enhanced image carousel
 
 [Demo](http://www.reinout.com/progressive-carousel)
 
+[<img src="https://github.com/reinoute/progressive-carousel/screenshot.jpg" alt="screeshot">](http://www.reinout.com/progressive-carousel)
+
 ## Features
 
 * Responsive and mobile-friendly
@@ -102,39 +104,10 @@ Typical things you may want to customize:
 - layout of the thumbnails when the carousel is not enhanced with JavaScript.
 
 ### JavaScript
-Follow the next 3 steps to install the JavaScript module.
 
-#### 1. Install package
-
-Install *progressive-carousel* using NPM and save it to your _package.json_ dependencies:
-
-```bash
-$ npm install progressive-carousel --save
-```
-
-#### 2. Import
-
-Import the module globablly (e.g. in `index.js`) or on the page with your carousel:
-
-```javascript
-import Carousel from 'progressive-carousel';
-```
-
-#### 3. Call
-
-Call `enhanceAll` to initialize all carousels on the page.
-
-```javascript
-Carousel.enhanceAll();
-```
-
-When installed correctly, the JavaScript module has set the `is-enhanced` class on the root element of the carousel:
-
-```html
-<div class="carousel is-enhanced" data-carousel>
-  ...
-</div>
-```
+> 
+> * NPM module coming soon  (for now, find the JavaScript [here](https://github.com/reinoute/progressive-carousel/blob/master/src/carousel.js))
+>
 
 ## Future
 
