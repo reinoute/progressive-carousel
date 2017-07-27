@@ -10,15 +10,15 @@ A mobile friendly and progressive enhanced image carousel
 
 * Responsive and mobile-friendly
 * Fullscreen mode
-* Touch gestures (using [Touch API](https://developer.mozilla.org/en-US/docs/Web/API/Touch_events)) and mouse dragging
+* Touch gestures and mouse dragging
 * Accessible with keyboard and screen reader
 * Clean and semantic HTML
 * Works with images of any size
 * Hardware accelerated animations (using CSS transform)
-* Lightweight (x kb minified)
+* Lightweight (~10kb minified)
 * No JQuery dependency
 * Browser support
-  * Browsers supporting [classList](http://caniuse.com/#search=classList) and [CSS transforms](http://caniuse.com/#search=css%20transition): basically *IE10+* and all modern browsers.
+  * Browsers supporting [classList](http://caniuse.com/#feat=classlist) and [CSS transforms](http://caniuse.com/#feat=css-transitions): basically *IE10+* and all modern browsers.
   * On older browsers (and while JavaScript is loading), the browser will render an ordinary grid of images. Clicking an image will open the high resolution image.
 
 ## About
@@ -27,11 +27,13 @@ Progressive Carousel has a **consistent user experience** across different scree
 
 On smaller screens, a tiny bit of the next and previous image is visible. This gives the user a hint that he can swipe the images left and right. 
 
-On larger screens, more images are visible in the image strip. Although the carousel can be nested in a single column layout, it is recommended to show the images on full width of the page, maximizing available screen space.
+Swiping is implemented using the [Touch API](https://developer.mozilla.org/en-US/docs/Web/API/Touch_events) (and not the more generic, but [less supported](http://caniuse.com/#feat=pointer), [Pointer Events API](https://developer.mozilla.org/en-US/docs/Web/API/Pointer_events)). When your browser [doesn't support the Touch API](http://caniuse.com/#feat=touch), you can still control the carousel with the buttons.
+
+On larger screens, more images are visible in the image strip. Although the carousel can be nested inside a single column layout, it is recommended to show the images on full width of the page, maximizing available screen space.
 
 The next/previous buttons and the first image in the strip are focusable with the keyboard (`TAB` key). Opening the first image with the keyboard will toggle fullscreen mode. While in fullscreen mode, users can press `ESC` to exit and the arrow keys (`← →`) to cycle through the images.
 
-The carousel uses the [Fullscreen API](https://developer.mozilla.org/en-US/docs/Web/API/Fullscreen_API). For [browsers not supporting the Fullscreen API](http://caniuse.com/#search=fullscreen), the carousel will be shown in 100% width/height of the browser window.
+The carousel uses the [Fullscreen API](https://developer.mozilla.org/en-US/docs/Web/API/Fullscreen_API). For [browsers not supporting the Fullscreen API](http://caniuse.com/#feat=fullscreen), the carousel will be shown in 100% width/height of the browser window.
    
 ## Requirements
 
@@ -84,7 +86,7 @@ Explanation:
   
      This allows the user to navigate to the high resolution image when the carousel is not enhanced with JavaScript. When? While JavaScript is loading, on browsers not meeting the minimum criteria or when JavaScript is disabled. [Everyone has Javascript, right](https://kryogenix.org/code/browser/everyonehasjs.html)? 
 * `<img>`
-  *  `src`: _url_ of the fallback image for browsers [not supporting 'srcset'](http://caniuse.com/#search=srcset).
+  *  `src`: _url_ of the fallback image for browsers [not supporting 'srcset'](http://caniuse.com/#feat=srcset).
      * In fullscreen mode, the carousel will replace the `src` value with the url of the image with the highest resolution (as specified in `srcset`). This allows browsers not supporting `srcset` to still show high resultion images in fullscreen mode. 
   *  `srcset`: list of responsive images and their natural width, so that browsers can choose the appropriate image ([srcset and sizes explanation](https://jakearchibald.com/2015/anatomy-of-responsive-images/#varying-size-and-density)). 
       * The example lists 4 images, but any number works. The browser will choose to load an image based on resolution and device-pixel-ratio. Providing enough images can save the user precious time and bandwidth.
