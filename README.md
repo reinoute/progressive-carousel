@@ -4,7 +4,7 @@ A mobile friendly and progressive enhanced image carousel
 
 [Demo](http://www.reinout.com/progressive-carousel)
 
-[<img src="https://github.com/reinoute/progressive-carousel/screenshot.jpg" alt="screeshot">](http://www.reinout.com/progressive-carousel)
+![Screenshot](/screenshot.jpg?raw=true)
 
 ## Features
 
