@@ -174,7 +174,7 @@ class Component {
         // remove the translateX value that was set on mousemove / touchmove
         this.items.forEach(item => item.style[this.transformPropertyName] = '');
 
-        const minimumMoveDistance = this.itemWidth / 5;
+        const minimumMoveDistance = this.itemWidth / 8;
         const totalDistanceMoved = positionX - this.touchStartX;
         // Chrome for Android reports a few pixels difference between touchstart
         // and touchend when tapping on the screen.
