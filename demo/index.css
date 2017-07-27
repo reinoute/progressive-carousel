@@ -92,6 +92,8 @@
 .carousel-img {
     /* limit thumbnail width when not enhanced with JavaScript */
     max-width: 300px;
+    /* remove the border on images inside links in IE 10- */
+    border-style: none;
 }
 
 .carousel.is-enhanced .carousel-img {
