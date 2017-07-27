@@ -120,9 +120,13 @@ class Component {
             anchor.addEventListener('click', this.onAnchorClick);
         });
 
-        // we only get the properties of the first item, assuming that the other
-        // images have the same dimensions
-        this.firstImage.addEventListener('load', this.getItemWidthAndTranslateZ);
+        this.firstImage.addEventListener('load', () => {
+            // we only get the properties of the first item, assuming
+            // that the other images have the same dimensions
+            this.getItemWidthAndTranslateZ();
+            // make the first visible item in the list focusable
+            this.updateTabindex();
+        });
 
         this.buttonNext.addEventListener('click', () => this.animate(this.DIRECTION.LEFT));
         this.buttonPrevious.addEventListener('click', () => this.animate(this.DIRECTION.RIGHT));
