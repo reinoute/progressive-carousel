@@ -86,6 +86,8 @@
 .carousel.is-enhanced .carousel-img {
     /* don't stretch img further than it's own natural width */
     max-width: 100%;
+    /* enable single-finger horizontal panning gestures */
+    touch-action: pan-x;
 }
 
 .carousel.is-fullscreen .carousel-img {
