@@ -138,12 +138,6 @@
     border: 2px solid gray;
 }
 
-.carousel-close:before {
-    /* x-icon as generated content, so that screenreaders ignore it */
-    content: '×';
-    margin-right: 16px;
-}
-
 .carousel.is-fullscreen .carousel-close {
     /* show close button in fullscreen mode */
     display: block;
