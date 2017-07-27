@@ -145,6 +145,29 @@
     right: 0;
 }
 
+/* triangle left/right */
+.carousel-previous:before,
+.carousel-next:before {
+    content: '';
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-color: transparent ;
+}
+
+/* triangle left */
+.carousel-previous:before {
+    border-width: 8px 14px 8px 0;
+    border-right-color: white;
+}
+
+/* triangle right */
+.carousel-next:before {
+    border-width: 8px 0 8px 14px;
+    border-left-color: white;
+}
+
 .carousel-close {
     top: -2px;
     /* horizontally center */
