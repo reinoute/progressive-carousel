@@ -1,12 +1,8 @@
 /*
- * Carousel component
- *
- * Useful resources about mouse / touch events:
- * https://www.html5rocks.com/en/mobile/touch/
- * https://www.html5rocks.com/en/mobile/touchandmouse/
+ * Carousel Component
  */
 
-// Vendor agnostic access to the Fullscreen API
+// Vendor agnostic access to the Fullscreen API:
 // https://github.com/rafrex/fscreen
 import fscreen from 'fscreen';
 

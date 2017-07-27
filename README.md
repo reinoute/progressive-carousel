@@ -10,7 +10,7 @@ A mobile friendly and progressive enhanced image carousel
 
 * Responsive and mobile-friendly
 * Fullscreen mode
-* Touch gestures and mouse dragging
+* Touch gestures (using [Touch API](https://developer.mozilla.org/en-US/docs/Web/API/Touch_events)) and mouse dragging
 * Accessible with keyboard and screen reader
 * Clean and semantic HTML
 * Works with images of any size
@@ -23,7 +23,7 @@ A mobile friendly and progressive enhanced image carousel
 
 ## About
 
-Progressive Carousel has a **consistent user experience** across different screen sizes, and on portrait/landscape orientation. There is no predefined amount of images for each breakpoint. 
+Progressive Carousel has a **consistent user experience** across different screen sizes, and on portrait/landscape orientation: there is no predefined amount of images for each breakpoint. 
 
 On smaller screens, a tiny bit of the next and previous image is visible. This gives the user a hint that he can swipe the images left and right. 
 
@@ -120,7 +120,8 @@ Not planned:
 - Captions
 - Breadcrumbs / circles / progress indicators
 
- 
+## Resources
 
-
+- https://www.html5rocks.com/en/mobile/touch/
+- https://www.html5rocks.com/en/mobile/touchandmouse/
 
