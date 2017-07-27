@@ -12,6 +12,7 @@
     right: 0;
     bottom: 0;
     left: 0;
+    background-color: black; /* fallback */
     background-color: rgba(0, 0, 0, 0.9); /* backdrop color */
 }
 
@@ -41,7 +42,9 @@
     /* vertically center */
     position: absolute;
     top: 50%;
-    transform: translateY(-50%);
+    -webkit-transform: translateY(-50%); /* Ch <36, Saf 5.1+, iOS < 9.2, An =<4.4.4 */
+    -ms-transform: translateY(-50%); /* IE 9 */
+    transform: translateY(-50%); /* IE 10, Fx 16+, Op 12.1+ */
 }
 
 .carousel-item {
@@ -55,17 +58,25 @@
      * Initially, position each item 200% of it's own width to the left,
      * so that they can animate back into the viewport again
      */
-    transform: translateX(-200%);
+    -webkit-transform: translateX(-200%); /* Ch <36, Saf 5.1+, iOS < 9.2, An =<4.4.4 */
+    -ms-transform: translateX(-200%); /* IE 9 */
+    transform: translateX(-200%); /* IE 10, Fx 16+, Op 12.1+ */
 }
 
 .carousel.is-enhanced .carousel-item.is-animating-left {
     transition: transform 0.2s ease-out;
-    transform: translateX(-300%); /* default - 100% */
+    /* triggered 'next': animate to default - 100% */
+    -webkit-transform: translateX(-300%); /* Ch <36, Saf 5.1+, iOS < 9.2, An =<4.4.4 */
+    -ms-transform: translateX(-300%); /* IE 9 */
+    transform: translateX(-300%); /* IE 10, Fx 16+, Op 12.1+ */
 }
 
 .carousel.is-enhanced .carousel-item.is-animating-right {
     transition: transform 0.2s ease-out;
-    transform: translateX(-100%); /* default + 100% */
+    /* triggered 'previous': animate to default + 100% */
+    -webkit-transform: translateX(-100%); /* Ch <36, Saf 5.1+, iOS < 9.2, An =<4.4.4 */
+    -ms-transform: translateX(-100%); /* IE 9 */
+    transform: translateX(-100%); /* IE 10, Fx 16+, Op 12.1+ */
 }
 
 .carousel.is-enhanced .carousel-item.is-animating-initial {
@@ -88,6 +99,11 @@
     max-width: 100%;
     /* enable single-finger horizontal panning gestures */
     touch-action: pan-x;
+    /* prevent accidentally selecting an image while dragging */
+    -webkit-user-select: none; /* Chrome / Safari */
+    -moz-user-select: none; /* Firefox  */
+    -ms-user-select: none; /* IE 10+ */
+    user-select: none;
 }
 
 .carousel.is-fullscreen .carousel-img {
@@ -133,7 +149,9 @@
     top: -2px;
     /* horizontally center */
     left: 50%;
-    transform: translateX(-50%);
+    -webkit-transform: translateX(-50%); /* Ch <36, Saf 5.1+, iOS < 9.2, An =<4.4.4 */
+    -ms-transform: translateX(-50%); /* IE 9 */
+    transform: translateX(-50%); /* IE 10, Fx 16+, Op 12.1+ */
     /* end horizontally center */
     padding: 16px;
     font-size: 1rem;

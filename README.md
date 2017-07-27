@@ -103,6 +103,8 @@ Typical things you may want to customize:
 - next/previous/close button styles
 - layout of the thumbnails when the carousel is not enhanced with JavaScript.
 
+The CSS file contains vendor prefixes. Consider using a build system with [autoprefixer](https://github.com/postcss/autoprefixer) to add them automatically. 
+
 ### JavaScript
 
 > 
