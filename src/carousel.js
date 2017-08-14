@@ -8,149 +8,134 @@ import fscreen from 'fscreen';
 
 import {getTransitionEndEventName, getTransformPropertyName} from './utils';
 
-class Component {
+function Carousel(root) {
 
-    constructor(element) {
-        // component configuration
-        this.config = {
-            itemSelector: '[data-carousel-item]',
-            anchorSelector: '[data-carousel-anchor]',
-            fullscreenClass: 'is-fullscreen',
-            scrollDisabledClass: 'scroll-disabled',
-            animateLeftClass: 'is-animating-left',
-            animateRightClass: 'is-animating-right',
-            animateInitialClass: 'is-animating-initial',
-            originalSrcAttribute: 'data-carousel-original-src'
-        };
+    // component configuration
+    const config = {
+        itemSelector: '[data-carousel-item]',
+        anchorSelector: '[data-carousel-anchor]',
+        fullscreenClass: 'is-fullscreen',
+        scrollDisabledClass: 'scroll-disabled',
+        animateLeftClass: 'is-animating-left',
+        animateRightClass: 'is-animating-right',
+        animateInitialClass: 'is-animating-initial',
+        originalSrcAttribute: 'data-carousel-original-src'
+    };
 
-        // Only initialize component when browser meets minimum requirements:
-        // 1. ClassList: https://caniuse.com/#feat=classlist
-        // 2. CSS3 transitions: http://caniuse.com/#feat=css-transitions
-        const supportsClassList = 'classList' in document.documentElement;
-        const supportsTransitions = getTransitionEndEventName();
+    // Only initialize component when browser meets minimum requirements:
+    // 1. ClassList: https://caniuse.com/#feat=classlist
+    // 2. CSS3 transitions: http://caniuse.com/#feat=css-transitions
+    const supportsClassList = 'classList' in document.documentElement;
+    const supportsTransitions = getTransitionEndEventName();
 
-        if (supportsClassList && supportsTransitions) {
-            element.classList.add('is-enhanced');
-        } else return;
+    if (supportsClassList && supportsTransitions) {
+        root.classList.add('is-enhanced');
+    } else return;
 
-        // component properties
-        this.root = element;
-        this.buttonNext = this.root.querySelector('[data-carousel-next]');
-        this.buttonPrevious = this.root.querySelector('[data-carousel-previous]');
-        this.buttonClose = this.root.querySelector('[data-carousel-close]');
-        this.list = this.root.querySelector('[data-carousel-list]');
-        this.items = [].slice.call(this.root.querySelectorAll(this.config.itemSelector));
-        this.anchors = [].slice.call(this.root.querySelectorAll(this.config.anchorSelector));
-        this.images = [].slice.call(this.root.querySelectorAll('[data-carousel-img]'));
-        this.transitionEventName = getTransitionEndEventName();
-        this.transformPropertyName = getTransformPropertyName();
-        this.firstImage = this.images[0];
-        this.sizesAttribute = this.firstImage.sizes; // assuming all images have the same sizes attribute
-        this.itemWidth = null;
-        this.itemTranslateX = null;
-        this.touchStartX = null;
-        this.resizeTimer = null;
-        this.isFullscreen = false;
-        this.DIRECTION = {LEFT: -1, INITIAL: 0, RIGHT: 1};
+    // component properties
+    const component = this;
+    const buttonNext = root.querySelector('[data-carousel-next]');
+    const buttonPrevious = root.querySelector('[data-carousel-previous]');
+    const buttonClose = root.querySelector('[data-carousel-close]');
+    let list = root.querySelector('[data-carousel-list]');
+    let items = [].slice.call(root.querySelectorAll(config.itemSelector));
+    let anchors = [].slice.call(root.querySelectorAll(config.anchorSelector));
+    let images = [].slice.call(root.querySelectorAll('[data-carousel-img]'));
+    const transitionEventName = getTransitionEndEventName();
+    const transformPropertyName = getTransformPropertyName();
+    let firstImage = images[0];
+    let sizesAttribute = firstImage.sizes; // assuming all images have the same sizes attribute
+    let itemWidth = null;
+    let itemTranslateX = null;
+    let touchStartX = null;
+    let resizeTimer = null;
+    let isFullscreen = false;
+    const DIRECTION = {LEFT: -1, INITIAL: 0, RIGHT: 1};
 
-        // bind functions to component context
-        this.getItemWidthAndTranslateZ = this.getItemWidthAndTranslateZ.bind(this);
-        this.onAnchorClick = this.onAnchorClick.bind(this);
-        this.animate = this.animate.bind(this);
-        this.closeFullscreen = this.closeFullscreen.bind(this);
-        this.onTouchStart = this.onTouchStart.bind(this);
-        this.onTouchEnd = this.onTouchEnd.bind(this);
-        this.onTouchMove = this.onTouchMove.bind(this);
-        this.onMouseDown = this.onMouseDown.bind(this);
-        this.onMouseUp = this.onMouseUp.bind(this);
-        this.onMouseMove = this.onMouseMove.bind(this);
-        this.panItem = this.panItem.bind(this);
+    // bind to events
+    window.addEventListener('resize', () => {
+        // clear timer when resize event has fired before the timer has finished
+        clearTimeout(resizeTimer);
 
-        // bind to events
-        window.addEventListener('resize', () => {
-            // clear timer when resize event has fired before the timer has finished
-            clearTimeout(this.resizeTimer);
+        // throttle getting item properties on each resize event
+        resizeTimer = setTimeout(function () {
+            getItemWidthAndTranslateZ();
+        }.bind(this), 100)
+    });
 
-            // throttle getting item properties on each resize event
-            this.resizeTimer = setTimeout(function () {
-                this.getItemWidthAndTranslateZ();
-            }.bind(this), 100)
-        });
+    root.addEventListener('click', (event) => {
+        const isOverlayClicked = event.target.hasAttribute('data-carousel');
 
-        this.root.addEventListener('click', (event) => {
-            const isOverlayClicked = event.target.hasAttribute('data-carousel');
+        if (isFullscreen && isOverlayClicked) {
+            closeFullscreen();
+        }
+    });
 
-            if (this.isFullscreen && isOverlayClicked) {
-                this.closeFullscreen();
+    root.addEventListener('keydown', (event) => {
+
+        if (isFullscreen) {
+            switch (event.which) {
+                case 27: // escape
+                    closeFullscreen();
+                    break;
+                case 37: // arrow left
+                    animate(DIRECTION.RIGHT);
+                    break;
+                case 39: // arrow right
+                    animate(DIRECTION.LEFT);
+                    break;
+                case 9: // tab
+                    // trap focus inside fullscreen overlay
+                    focusElement(event);
+                    break;
             }
-        });
+        }
+    });
 
-        this.root.addEventListener('keydown', (event) => {
+    items.forEach(item => {
+        // bind to events for touch enabled devices
+        item.addEventListener('touchstart', onTouchStart);
+        item.addEventListener('touchend', onTouchEnd);
+        item.addEventListener('touchmove', onTouchMove, {passive: true});
+        // bind to mouse events to allow dragging on non-touch devices
+        item.addEventListener('mousedown', onMouseDown(item));
+        item.addEventListener('mouseup', onMouseUp(item));
+    });
 
-            if (this.isFullscreen) {
-                switch (event.which) {
-                    case 27: // escape
-                        this.closeFullscreen();
-                        break;
-                    case 37: // arrow left
-                        this.animate(this.DIRECTION.RIGHT);
-                        break;
-                    case 39: // arrow right
-                        this.animate(this.DIRECTION.LEFT);
-                        break;
-                    case 9: // tab
-                        // trap focus inside fullscreen overlay
-                        this.focusElement(event);
-                        break;
-                }
-            }
-        });
+    anchors.forEach(anchor => {
+        anchor.addEventListener('click', onAnchorClick);
+    });
 
-        this.items.forEach(item => {
-            // bind to events for touch enabled devices
-            item.addEventListener('touchstart', this.onTouchStart);
-            item.addEventListener('touchend', this.onTouchEnd);
-            item.addEventListener('touchmove', this.onTouchMove, {passive: true});
-            // bind to mouse events to allow dragging on non-touch devices
-            item.addEventListener('mousedown', this.onMouseDown(item));
-            item.addEventListener('mouseup', this.onMouseUp(item));
-        });
+    firstImage.addEventListener('load', () => {
+        // we only get the properties of the first item, assuming
+        // that the other images have the same dimensions
+        getItemWidthAndTranslateZ();
+        // make the first visible item in the list focusable
+        updateTabindex();
+    });
 
-        this.anchors.forEach(anchor => {
-            anchor.addEventListener('click', this.onAnchorClick);
-        });
+    buttonNext.addEventListener('click', () => animate(DIRECTION.LEFT));
+    buttonPrevious.addEventListener('click', () => animate(DIRECTION.RIGHT));
+    buttonClose.addEventListener('click', closeFullscreen);
 
-        this.firstImage.addEventListener('load', () => {
-            // we only get the properties of the first item, assuming
-            // that the other images have the same dimensions
-            this.getItemWidthAndTranslateZ();
-            // make the first visible item in the list focusable
-            this.updateTabindex();
-        });
+    fscreen.addEventListener('fullscreenchange', () => {
+        // exited native fullscreen (e.g. using Escape)
+        if (fscreen.fullscreenElement === null) {
+            closeFullscreen();
+        }
+    }, false);
 
-        this.buttonNext.addEventListener('click', () => this.animate(this.DIRECTION.LEFT));
-        this.buttonPrevious.addEventListener('click', () => this.animate(this.DIRECTION.RIGHT));
-        this.buttonClose.addEventListener('click', this.closeFullscreen);
-
-        fscreen.addEventListener('fullscreenchange', () => {
-            // exited native fullscreen (e.g. using Escape)
-            if (fscreen.fullscreenElement === null) {
-                this.closeFullscreen();
-            }
-        }, false);
-    }
-
-    getItemWidthAndTranslateZ() {
+    function getItemWidthAndTranslateZ() {
         // now all images are downloaded and the page is fully rendered, we can get the item width
-        this.itemWidth = this.items[0].offsetWidth;
+        itemWidth = items[0].offsetWidth;
         // ...and we can get the translateZ value
         // https://medium.com/building-blocks/how-to-read-out-translatex-translatey-from-an-element-with-translate3d-with-jquery-c15d2dcccc2c
-        const style = window.getComputedStyle(this.items[0], null).getPropertyValue('transform');
+        const style = window.getComputedStyle(items[0], null).getPropertyValue('transform');
         const matrix = style.replace(/[^0-9\-.,]/g, '').split(',');
-        this.itemTranslateX = parseInt(matrix[12]) || parseInt(matrix[4]);
+        itemTranslateX = parseInt(matrix[12]) || parseInt(matrix[4]);
     }
 
-    onAnchorClick(event) {
+    function onAnchorClick(event) {
         // prevent navigating to anchor.href
         event.preventDefault();
 
@@ -158,172 +143,172 @@ class Component {
         // https://developer.mozilla.org/en-US/docs/Web/API/UIEvent/detail
         const isTriggeredByKeyboard = event.detail === 0;
 
-        if (isTriggeredByKeyboard && !this.isFullscreen) {
-            this.openFullscreen();
+        if (isTriggeredByKeyboard && !isFullscreen) {
+            openFullscreen();
         }
     }
 
-    onTouchStart(event) {
+    function onTouchStart(event) {
         // prevent touch also triggering 'mousedown'
         event.preventDefault();
 
-        this.touchStartX = event.targetTouches[0].clientX;
+        touchStartX = event.targetTouches[0].clientX;
     }
 
-    onTouchEnd() {
-        this.handlePointerUp(event.changedTouches[0].clientX);
+    function onTouchEnd() {
+        handlePointerUp(event.changedTouches[0].clientX);
     }
 
-    handlePointerUp(positionX) {
+    function handlePointerUp(positionX) {
         // remove the translateX value that was set on mousemove / touchmove
-        this.items.forEach(item => item.style[this.transformPropertyName] = '');
+        items.forEach(item => item.style[transformPropertyName] = '');
 
-        const minimumMoveDistance = this.itemWidth / 8;
-        const totalDistanceMoved = positionX - this.touchStartX;
+        const minimumMoveDistance = itemWidth / 8;
+        const totalDistanceMoved = positionX - touchStartX;
         // Chrome for Android reports a few pixels difference between touchstart
         // and touchend when tapping on the screen.
         const clickDetectedTresshold = 10;
 
         if (Math.abs(totalDistanceMoved) < clickDetectedTresshold) {
             // click detected
-            this.isFullscreen ? this.animate(this.DIRECTION.LEFT) : this.openFullscreen();
+            isFullscreen ? animate(DIRECTION.LEFT) : openFullscreen();
         } else if (totalDistanceMoved < 0 && Math.abs(totalDistanceMoved) > minimumMoveDistance) {
             // swipe left detected
-            this.animate(this.DIRECTION.LEFT);
+            animate(DIRECTION.LEFT);
         } else if (totalDistanceMoved > minimumMoveDistance) {
             // swipe right detected
-            this.animate(this.DIRECTION.RIGHT);
+            animate(DIRECTION.RIGHT);
         } else {
             // swiped less than the required minimum distance:
             // animate back to initial state
-            this.animate(this.DIRECTION.INITIAL);
+            animate(DIRECTION.INITIAL);
         }
 
-        this.touchStartX = null;
+        touchStartX = null;
     }
 
-    onTouchMove(event) {
+    function onTouchMove(event) {
 
-        if (this.touchStartX) {
+        if (touchStartX) {
             const positionX = event.changedTouches[0].clientX;
-            this.panItem(positionX);
+            panItem(positionX);
         }
     }
 
-    panItem(positionX) {
-        const distanceMovedX = positionX - this.touchStartX;
-        const offsetXTotal = this.itemTranslateX + distanceMovedX;
+    function panItem(positionX) {
+        const distanceMovedX = positionX - touchStartX;
+        const offsetXTotal = itemTranslateX + distanceMovedX;
         const newTranslateX = Math.max(
-            Math.min(this.itemTranslateX + this.itemWidth, offsetXTotal),
-            this.itemTranslateX - this.itemWidth
+            Math.min(itemTranslateX + itemWidth, offsetXTotal),
+            itemTranslateX - itemWidth
         );
 
-        this.items.forEach(item => item.style[this.transformPropertyName] = `translateX(${newTranslateX}px)`);
+        items.forEach(item => item.style[transformPropertyName] = `translateX(${newTranslateX}px)`);
     }
 
-    onMouseDown(item) {
+    function onMouseDown(item) {
         return function (event) {
             /* prevent default browser behavior, such as dragging an image to another application */
             event.preventDefault();
 
-            this.touchStartX = event.clientX;
-            item.addEventListener('mousemove', this.onMouseMove, {passive: true});
+            touchStartX = event.clientX;
+            item.addEventListener('mousemove', onMouseMove, {passive: true});
         }.bind(this);
     }
 
-    onMouseUp(item) {
+    function onMouseUp(item) {
         return function (event) {
-            this.handlePointerUp(event.clientX);
-            item.removeEventListener('mousemove', this.onMouseMove);
+            handlePointerUp(event.clientX);
+            item.removeEventListener('mousemove', onMouseMove);
         }.bind(this);
     }
 
-    onMouseMove(event) {
-        const isAnimating = this.items.some(item => this.isAnimating(item));
+    function onMouseMove(event) {
+        const isAnimating = items.some(item => component.isAnimating(item));
 
-        if (this.touchStartX && !isAnimating) {
+        if (touchStartX && !isAnimating) {
             const positionX = event.clientX;
-            this.panItem(positionX);
+            panItem(positionX);
         }
     }
 
-    animate(direction) {
+    function animate(direction) {
         // query items, since the order may have changed after the last animation
-        const items = [].slice.call(this.root.querySelectorAll(this.config.itemSelector));
+        const items = [].slice.call(root.querySelectorAll(config.itemSelector));
 
         // abort if an animation is still running on an item
-        if (items.some(item => this.isAnimating(item)))
+        if (items.some(item => component.isAnimating(item)))
             return;
 
         items.forEach((item, index) => {
             // add event listener so that class can be removed after CSS transition has ended
-            item.addEventListener(this.transitionEventName, this.onAnimateEnded(item, index, direction));
+            item.addEventListener(transitionEventName, onAnimateEnded(item, index, direction));
             // add class to trigger CSS animation
-            item.classList.add(this.getAnimationClass(direction));
+            item.classList.add(getAnimationClass(direction));
         });
     }
 
-    isAnimating(item) {
+    component.isAnimating = function (item) {
         const animatingClasses = [
-            this.config.animateLeftClass,
-            this.config.animateRightClass,
-            this.config.animateInitialClass
+            config.animateLeftClass,
+            config.animateRightClass,
+            config.animateInitialClass
         ];
 
         return animatingClasses.some(animatingClass =>
             item.classList.contains(animatingClass)
         );
-    }
+    };
 
-    getAnimationClass(direction) {
+    function getAnimationClass(direction) {
 
-        if (direction === this.DIRECTION.LEFT) {
-            return this.config.animateLeftClass;
-        } else if (direction === this.DIRECTION.RIGHT) {
-            return this.config.animateRightClass;
-        } else if (direction === this.DIRECTION.INITIAL) {
-            return this.config.animateInitialClass;
+        if (direction === DIRECTION.LEFT) {
+            return config.animateLeftClass;
+        } else if (direction === DIRECTION.RIGHT) {
+            return config.animateRightClass;
+        } else if (direction === DIRECTION.INITIAL) {
+            return config.animateInitialClass;
         } else {
             return null;
         }
     }
 
-    onAnimateEnded(item, index, direction) {
+    function onAnimateEnded(item, index, direction) {
         const handleAnimateEnded = function () {
-            item.removeEventListener(this.transitionEventName, handleAnimateEnded);
+            item.removeEventListener(transitionEventName, handleAnimateEnded);
 
             // when the first item has finished animating, append it to the end of the list
             const firstItem = index === 0;
 
-            if (direction === this.DIRECTION.LEFT && firstItem) {
-                this.list.appendChild(item);
-                this.updateTabindex();
+            if (direction === DIRECTION.LEFT && firstItem) {
+                list.appendChild(item);
+                updateTabindex();
             }
 
             // ...or if it's the last item, insert it at the beginning of the list
-            const lastItem = index === this.items.length - 1;
+            const lastItem = index === items.length - 1;
 
-            if (direction === this.DIRECTION.RIGHT && lastItem) {
-                this.list.insertBefore(item, this.list.firstElementChild);
-                this.updateTabindex();
+            if (direction === DIRECTION.RIGHT && lastItem) {
+                list.insertBefore(item, list.firstElementChild);
+                updateTabindex();
             }
 
             // remove animation class
-            item.classList.remove(this.getAnimationClass(direction));
+            item.classList.remove(getAnimationClass(direction));
 
         }.bind(this);
 
         return handleAnimateEnded;
     }
 
-    updateTabindex() {
+    function updateTabindex() {
         // query anchors, since the order may have changed after an animation
-        const anchors = [].slice.call(this.root.querySelectorAll(this.config.anchorSelector));
+        const anchors = [].slice.call(root.querySelectorAll(config.anchorSelector));
 
         anchors.forEach((anchor, index) => {
-            const focusableAnchorIndex = Math.abs(this.itemTranslateX / this.itemWidth);
+            const focusableAnchorIndex = Math.abs(itemTranslateX / itemWidth);
 
-            if (this.isFullscreen) {
+            if (isFullscreen) {
                 // normally an anchor triggers fullscreen mode, but in fullscreen
                 // mode anchors should not be interactive, so don't make them focusable
                 anchor.setAttribute('tabindex', -1);
@@ -335,75 +320,75 @@ class Component {
         });
     }
 
-    focusElement(event) {
-        const isFirstElementFocused = document.activeElement === this.buttonClose;
-        const isLastElementFocused = document.activeElement === this.buttonNext;
+    function focusElement(event) {
+        const isFirstElementFocused = document.activeElement === buttonClose;
+        const isLastElementFocused = document.activeElement === buttonNext;
 
         if (event.shiftKey && isFirstElementFocused) {
             event.preventDefault();
-            this.buttonNext.focus();
+            buttonNext.focus();
         } else if (!event.shiftKey && isLastElementFocused) {
             event.preventDefault();
-            this.buttonClose.focus();
+            buttonClose.focus();
         }
     }
 
-    openFullscreen() {
-        this.isFullscreen = true;
+    function openFullscreen() {
+        isFullscreen = true;
         // swap the `src` of all images with the high res version, so that browsers not supporting
         // `srcset` show high resolution images in fullscreen mode
-        this.images.forEach(image => this.swapFallbackImage(image));
+        images.forEach(image => swapFallbackImage(image));
         // show carousel in fullscreen overlay
-        this.root.classList.add(this.config.fullscreenClass);
+        root.classList.add(config.fullscreenClass);
         // disable scrolling on body while fullscreen is active
-        document.body.classList.add(this.config.scrollDisabledClass);
+        document.body.classList.add(config.scrollDisabledClass);
         // make image stretch to 100% viewport width
-        this.images.forEach(image => image.sizes = '100vw');
+        images.forEach(image => image.sizes = '100vw');
         // item width and translateX have changed: get new values
-        this.getItemWidthAndTranslateZ();
+        getItemWidthAndTranslateZ();
         // anchors around images should not be focusable in fullscreen
-        this.anchors.forEach(anchor => anchor.setAttribute('tabindex', -1));
+        anchors.forEach(anchor => anchor.setAttribute('tabindex', -1));
         // focus close button
-        this.buttonClose.focus();
+        buttonClose.focus();
         // toggle native fullscreen when Fullscreen API is supported
         if (fscreen.fullscreenEnabled) {
-            fscreen.requestFullscreen(this.root);
+            fscreen.requestFullscreen(root);
         }
     }
 
-    closeFullscreen() {
-        this.isFullscreen = false;
+    function closeFullscreen() {
+        isFullscreen = false;
         // exit browser fullscreen mode when Fullscreen API is supported
         if (fscreen.fullscreenEnabled && fscreen.fullscreenElement !== null) {
             fscreen.exitFullscreen();
         }
         // revert fallback image src from high res to original src
-        this.images.forEach(image => this.swapFallbackImage(image));
+        images.forEach(image => swapFallbackImage(image));
         // hide fullscreen overlay
-        this.root.classList.remove(this.config.fullscreenClass);
+        root.classList.remove(config.fullscreenClass);
         // enable scrolling on body again
-        document.body.classList.remove(this.config.scrollDisabledClass);
+        document.body.classList.remove(config.scrollDisabledClass);
         // restore original sizes attribute
-        this.images.forEach(image => image.sizes = this.sizesAttribute);
+        images.forEach(image => image.sizes = sizesAttribute);
         // item width and translateX have changed: get new values
-        this.getItemWidthAndTranslateZ();
+        getItemWidthAndTranslateZ();
         // update tabindexes for all anchors
-        this.updateTabindex();
+        updateTabindex();
         // focus anchor of currently visible image
-        const anchor = this.anchors.filter(anchor => anchor.getAttribute('tabindex') === '0');
+        const anchor = anchors.filter(anchor => anchor.getAttribute('tabindex') === '0');
 
         if (anchor && anchor.length > 0) {
             anchor[0].focus();
         }
     }
 
-    swapFallbackImage(image) {
-        const originalSrc = image.getAttribute(this.config.originalSrcAttribute);
+    function swapFallbackImage(image) {
+        const originalSrc = image.getAttribute(config.originalSrcAttribute);
 
         if (originalSrc) {
             // restore original img src
             image.src = originalSrc;
-            image.removeAttribute(this.config.originalSrcAttribute);
+            image.removeAttribute(config.originalSrcAttribute);
         } else {
             // find the highest resolution image in the `srcset` attribute,
             // and set it as the current `src`
@@ -426,14 +411,14 @@ class Component {
                     width: image.naturalWidth
                 });
 
-            image.setAttribute(this.config.originalSrcAttribute, image.src);
+            image.setAttribute(config.originalSrcAttribute, image.src);
             image.src = highResImage.url;
         }
     }
 }
 
 const enhanceElement = (element) =>
-    element ? new Component(element) : false;
+    element ? new Carousel(element) : false;
 
 const enhance = () =>
     enhanceElement(document.querySelector('[data-carousel]'));
