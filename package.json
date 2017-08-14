@@ -1,6 +1,6 @@
 {
   "name": "progressive-carousel",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "A mobile friendly and progressive enhanced image carousel",
   "moduleName": "Carousel",
   "main": "dist/progressive-carousel.js",
