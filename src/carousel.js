@@ -33,7 +33,6 @@ function Carousel(root) {
     } else return;
 
     // component properties
-    const component = this;
     const buttonNext = root.querySelector('[data-carousel-next]');
     const buttonPrevious = root.querySelector('[data-carousel-previous]');
     const buttonClose = root.querySelector('[data-carousel-close]');
@@ -53,6 +52,7 @@ function Carousel(root) {
     const DIRECTION = {LEFT: -1, INITIAL: 0, RIGHT: 1};
 
     // bind to events
+
     window.addEventListener('resize', () => {
         // clear timer when resize event has fired before the timer has finished
         clearTimeout(resizeTimer);
@@ -64,7 +64,7 @@ function Carousel(root) {
     });
 
     root.addEventListener('click', (event) => {
-        const isOverlayClicked = event.target.hasAttribute('data-carousel');
+        const isOverlayClicked = event.target === root;
 
         if (isFullscreen && isOverlayClicked) {
             closeFullscreen();
@@ -224,9 +224,8 @@ function Carousel(root) {
     }
 
     function onMouseMove(event) {
-        const isAnimating = items.some(item => component.isAnimating(item));
 
-        if (touchStartX && !isAnimating) {
+        if (touchStartX && !items.some(item => isAnimating(item))) {
             const positionX = event.clientX;
             panItem(positionX);
         }
@@ -237,7 +236,7 @@ function Carousel(root) {
         const items = [].slice.call(root.querySelectorAll(config.itemSelector));
 
         // abort if an animation is still running on an item
-        if (items.some(item => component.isAnimating(item)))
+        if (items.some(item => isAnimating(item)))
             return;
 
         items.forEach((item, index) => {
@@ -248,7 +247,7 @@ function Carousel(root) {
         });
     }
 
-    component.isAnimating = function (item) {
+    function isAnimating (item) {
         const animatingClasses = [
             config.animateLeftClass,
             config.animateRightClass,
