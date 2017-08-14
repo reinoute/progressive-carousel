@@ -24,7 +24,7 @@ module.exports = {
     dest: 'dist/progressive-carousel.js',
     format: 'iife',
     plugins,
-    moduleName: 'Carousel',
+    moduleName: pkg.moduleName,
     targets: [
         { format:'cjs', dest: pkg.main },
         { format:'es', dest: pkg.module },
