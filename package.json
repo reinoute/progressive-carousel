@@ -5,6 +5,8 @@
   "main": "dist/progressive-carousel.js",
   "module": "dist/progressive-carousel.module.js",
   "moduleName": "dist/progressive-carousel.module.js",
+  "jsnext:main": "dist/progressive-carousel.es.js",
+  "umd:main": "dist/progressive-carousel.umd.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/reinoute/progressive-carousel.git"
@@ -19,7 +21,7 @@
   "bugs": {
     "url": "https://github.com/reinoute/progressive-carousel/issues"
   },
-  "homepage": "https://github.com/reinoute/progressive-carousel#readme",
+  "homepage": "http://www.reinout.com/progressive-carousel/",
   "scripts": {
     "build": "npm run build:js",
     "build:js": "rollup --config rollup.config.js --environment NODE_ENV:production",

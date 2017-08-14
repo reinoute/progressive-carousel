@@ -13,13 +13,21 @@ const plugins = [
     buble()
 ];
 
+const pkg = require('./package.json');
+
 if (isProduction) {
     plugins.push(uglify());
 }
 
 module.exports = {
     entry: 'src/index.js',
-    dest: 'demo/index.js',
+    dest: 'dist/progressive-carousel.js',
     format: 'iife',
     plugins,
+    moduleName: 'Carousel',
+    targets: [
+        { format:'cjs', dest: pkg.main },
+        { format:'es', dest: pkg.module },
+        { format:'umd', dest: pkg['umd:main'] }
+    ]
 };

@@ -97,7 +97,7 @@ Explanation:
 
 ### CSS
 
-You can find boilerplate CSS [here](./demo/index.css) to get you started. 
+You can find boilerplate CSS [here](./src/index.css) to get you started. 
 
 Typical things you may want to customize:
 
