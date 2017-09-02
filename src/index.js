@@ -2,7 +2,9 @@
  *  progressive-carousel
  *
  *  https://github.com/reinoute/progressive-carousel
+ *
  *  Author: Reinout Eppinga (reinout@reinout.com)
+ *  Website: http://www.reinout.com
  */
 
 // Import module for vendor agnostic access to the Fullscreen API
@@ -451,9 +453,9 @@ function Carousel(root) {
     }
 }
 
-const enhanceAll = () => {
-    const elements = [].slice.call(document.querySelectorAll('[data-carousel]'));
+const enhanceAll = (context = document, selector = '[data-carousel]') => {
+    const elements = [].slice.call(context.querySelectorAll(selector));
     return elements.map(element => new Carousel(element));
 };
 
-export default {enhanceAll};
+export default { enhanceAll };
