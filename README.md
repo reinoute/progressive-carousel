@@ -55,7 +55,8 @@ Get started by adding the following HTML to your page.
     <button class="carousel-close" 
             data-carousel-close>Close</button>
     <button class="carousel-previous" 
-            data-carousel-previous>Previous</button>
+            data-carousel-previous
+            aria-label="Previous"></button>
     <ul class="carousel-list" 
         data-carousel-list>
         <li class="carousel-item" data-carousel-item>
@@ -76,7 +77,8 @@ Get started by adding the following HTML to your page.
         <!-- <li>'s for remaining images here -->
     </ul>
     <button class="carousel-next"
-            data-carousel-next>Next</button>
+            data-carousel-next 
+            aria-label="Previous"></button>
 </div>
 ```
 Explanation:
@@ -109,9 +111,18 @@ The CSS file contains vendor prefixes. Consider using a build system with [autop
 
 ### JavaScript
 
-> 
-> * NPM module coming soon  (for now, find the JavaScript [here](https://github.com/reinoute/progressive-carousel/blob/master/src/carousel.js))
->
+1. First, import the JavaScript module:
+
+```javascript
+import Carousel from 'progressive-carousel';
+```
+2. Initialize all carousels within the provided context (e.g. document or any other DOM element) and provide the name of the root selector (default: `[data-carousel]`).
+
+```javascript
+Carousel.enhanceAll(document, '[data-carousel]');
+```
+
+When the carousel has been initialized, the images should be positioned side by side (in a 'film strip') and no longer in a grid.
 
 ## Future
 
