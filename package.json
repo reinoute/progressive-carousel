@@ -5,8 +5,6 @@
   "moduleName": "Carousel",
   "main": "dist/progressive-carousel.js",
   "module": "dist/progressive-carousel.module.js",
-  "jsnext:main": "dist/progressive-carousel.es.js",
-  "umd:main": "dist/progressive-carousel.umd.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/reinoute/progressive-carousel.git"
@@ -23,10 +21,8 @@
   },
   "homepage": "http://www.reinout.com/progressive-carousel/",
   "scripts": {
-    "build": "npm run build:js",
-    "build:js": "rollup --config rollup.config.js --environment NODE_ENV:production",
-    "watch": "npm run watch:js",
-    "watch:js": "rollup --config rollup.config.js --watch",
+    "build": "rollup --config rollup.config.js",
+    "watch": "rollup --config rollup.config.js --watch",
     "server": "python -m SimpleHTTPServer 3000"
   },
   "devDependencies": {
