@@ -15,12 +15,8 @@ const pkg = require('./package.json');
 module.exports = {
     entry: 'src/index.js',
     dest: 'dist/progressive-carousel.js',
-    format: 'iife',
+    format: 'umd',
+    exports: 'default',
     plugins,
-    moduleName: pkg.moduleName,
-    targets: [
-        { format:'cjs', dest: pkg.main },
-        { format:'es', dest: pkg.module },
-        { format:'umd', dest: pkg['umd:main'] }
-    ]
+    moduleName: pkg.moduleName
 };

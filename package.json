@@ -36,5 +36,8 @@
     "rollup-plugin-eslint": "^4.0.0",
     "rollup-plugin-node-resolve": "^3.0.0",
     "rollup-watch": "^4.3.1"
+  },
+  "dependencies": {
+    "fscreen": "^1.0.2"
   }
 }
