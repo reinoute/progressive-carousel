@@ -7,7 +7,7 @@ const uglify = require('rollup-plugin-uglify');             // https://github.co
 const isProduction = (process.env.NODE_ENV === 'production');
 
 const plugins = [
-    nodeResolve({ jsnext: true, main: true }),
+    nodeResolve({  main: true }),
     commonjs({ include: 'node_modules/**' }),
     eslint(),
     buble()
