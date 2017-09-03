@@ -2,9 +2,7 @@
   "name": "progressive-carousel-demo",
   "version": "1.0.0",
   "description": "A mobile friendly and progressive enhanced image carousel",
-  "main": "dist/progressive-carousel.js",
-  "module": "dist/progressive-carousel.module.js",
-  "moduleName": "dist/progressive-carousel.module.js",
+  "main": "src/index.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/reinoute/progressive-carousel.git"
