@@ -1,0 +1,189 @@
+.carousel {
+    /* for absolute position of next/previous button */
+    position: relative;
+    /* animate the background-color when entering fullscreen */
+    transition: background-color 0.3s ease-out;
+}
+
+.carousel.is-fullscreen {
+    /* stretch to 100% browser width/height */
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    background-color: black; /* fallback */
+    background-color: rgba(0, 0, 0, 0.9); /* backdrop color */
+}
+
+.carousel-list {
+    list-style: none;
+    /* clear whitespace around .carousel-item */
+    font-size: 0;
+    /* center align thumbnails when not enhanced with JavaScript */
+    text-align: center;
+}
+
+.carousel.is-enhanced .carousel-list {
+    list-style: none;
+    /* show a tiny bit of the image positioned outside the viewport */
+    padding-left: 3%;
+    /* place items on 1 line */
+    white-space: nowrap;
+    /* hide images positioned outside .carousel-list */
+    overflow-x: hidden;
+    /* clear whitespace around .carousel-item */
+    font-size: 0;
+}
+
+.carousel.is-fullscreen .carousel-list {
+    /* in fullscreen, don't show a bit of the previous image */
+    padding-left: 0;
+    /* vertically center */
+    position: absolute;
+    top: 50%;
+    -webkit-transform: translateY(-50%); /* Ch <36, Saf 5.1+, iOS < 9.2, An =<4.4.4 */
+    -ms-transform: translateY(-50%); /* IE 9 */
+    transform: translateY(-50%); /* IE 10, Fx 16+, Op 12.1+ */
+}
+
+.carousel-item {
+    display: inline-block;
+    /* add some spacing between items */
+    margin-right: 2%;
+}
+
+.carousel.is-enhanced .carousel-item {
+    /*
+     * Initially, position each item 200% of it's own width to the left,
+     * so that they can animate back into the viewport again
+     */
+    -webkit-transform: translateX(-200%); /* Ch <36, Saf 5.1+, iOS < 9.2, An =<4.4.4 */
+    -ms-transform: translateX(-200%); /* IE 9 */
+    transform: translateX(-200%); /* IE 10, Fx 16+, Op 12.1+ */
+}
+
+.carousel.is-enhanced .carousel-item.is-animating-left {
+    transition: transform 0.2s ease-out;
+    /* triggered 'next': animate to default - 100% */
+    -webkit-transform: translateX(-300%); /* Ch <36, Saf 5.1+, iOS < 9.2, An =<4.4.4 */
+    -ms-transform: translateX(-300%); /* IE 9 */
+    transform: translateX(-300%); /* IE 10, Fx 16+, Op 12.1+ */
+}
+
+.carousel.is-enhanced .carousel-item.is-animating-right {
+    transition: transform 0.2s ease-out;
+    /* triggered 'previous': animate to default + 100% */
+    -webkit-transform: translateX(-100%); /* Ch <36, Saf 5.1+, iOS < 9.2, An =<4.4.4 */
+    -ms-transform: translateX(-100%); /* IE 9 */
+    transform: translateX(-100%); /* IE 10, Fx 16+, Op 12.1+ */
+}
+
+.carousel.is-enhanced .carousel-item.is-animating-initial {
+    /* animate back to initial state */
+    transition: transform 0.2s ease-out;
+}
+
+.carousel.is-fullscreen .carousel-item {
+    /* in fullscreen, remove the spacing between items */
+    margin-right: 0;
+}
+
+.carousel-img {
+    /* limit thumbnail width when not enhanced with JavaScript */
+    max-width: 300px;
+    /* remove the border on images inside links in IE 10- */
+    border-style: none;
+}
+
+.carousel.is-enhanced .carousel-img {
+    /* don't stretch img further than it's own natural width */
+    max-width: 100%;
+    /* enable single-finger horizontal panning gestures */
+    touch-action: pan-x;
+    /* prevent accidentally selecting an image while dragging */
+    -webkit-user-select: none; /* Chrome / Safari */
+    -moz-user-select: none; /* Firefox  */
+    -ms-user-select: none; /* IE 10+ */
+    user-select: none;
+}
+
+.carousel.is-fullscreen .carousel-img {
+    /* show image on full width of the browser */
+    width: 100%;
+}
+
+.carousel-previous,
+.carousel-next,
+.carousel-close {
+    display: none; /* hide when not enhanced with JS */
+    position: absolute;
+    color: white;
+    background-color: black; /* fallback */
+    background-color: rgba(0, 0, 0, 0.75);
+    cursor: pointer;
+    z-index: 1;
+}
+
+.carousel.is-enhanced .carousel-previous,
+.carousel.is-enhanced .carousel-next {
+    display: block; /* show next/previous when enhanced with JS */
+}
+
+.carousel-previous,
+.carousel-next {
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    /* vertically center */
+    top: 0;
+    bottom: 0;
+    margin: auto;
+    /* end vertically center */
+    border: 0;
+}
+
+.carousel-next {
+    right: 0;
+}
+
+/* triangle left/right */
+.carousel-previous:before,
+.carousel-next:before {
+    content: '';
+    display: inline-block;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-color: transparent ;
+}
+
+/* triangle left */
+.carousel-previous:before {
+    border-width: 8px 14px 8px 0;
+    border-right-color: white;
+}
+
+/* triangle right */
+.carousel-next:before {
+    border-width: 8px 0 8px 14px;
+    border-left-color: white;
+}
+
+.carousel-close {
+    top: -2px;
+    /* horizontally center */
+    left: 50%;
+    -webkit-transform: translateX(-50%); /* Ch <36, Saf 5.1+, iOS < 9.2, An =<4.4.4 */
+    -ms-transform: translateX(-50%); /* IE 9 */
+    transform: translateX(-50%); /* IE 10, Fx 16+, Op 12.1+ */
+    /* end horizontally center */
+    padding: 16px;
+    font-size: 1rem;
+    border: 2px solid gray;
+}
+
+.carousel.is-fullscreen .carousel-close {
+    /* show close button in fullscreen mode */
+    display: block;
+}

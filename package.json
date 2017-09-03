@@ -1,5 +1,5 @@
 {
-  "name": "progressive-carousel",
+  "name": "progressive-carousel-demo",
   "version": "1.0.0",
   "description": "A mobile friendly and progressive enhanced image carousel",
   "main": "dist/progressive-carousel.js",
@@ -28,12 +28,15 @@
     "server": "python -m SimpleHTTPServer 3000"
   },
   "devDependencies": {
-    "rollup": "^0.45.2",
-    "rollup-plugin-buble": "^0.15.0",
-    "rollup-plugin-commonjs": "^8.0.2",
-    "rollup-plugin-eslint": "^4.0.0",
-    "rollup-plugin-node-resolve": "^3.0.0",
-    "rollup-plugin-uglify": "^2.0.1",
-    "rollup-watch": "^4.3.1"
+    "rollup": "0.41.4",
+    "rollup-plugin-buble": "0.15.0",
+    "rollup-plugin-commonjs": "7.0.0",
+    "rollup-plugin-eslint": "3.0.0",
+    "rollup-plugin-node-resolve": "2.0.0",
+    "rollup-plugin-uglify": "1.0.1",
+    "rollup-watch": "3.2.2"
+  },
+  "dependencies": {
+    "progressive-carousel": "^1.2.0"
   }
 }

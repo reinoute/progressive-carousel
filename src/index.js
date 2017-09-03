@@ -1,3 +1,1 @@
-import Carousel from './carousel';
-
-Carousel.enhance();
+console.log('test')

@@ -19,7 +19,7 @@ if (isProduction) {
 
 module.exports = {
     entry: 'src/index.js',
-    dest: 'demo/index.js',
+    dest: 'index.js',
     format: 'iife',
     plugins,
 };
