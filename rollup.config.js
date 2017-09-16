@@ -4,19 +4,26 @@ const eslint = require('rollup-plugin-eslint');             // https://github.co
 const nodeResolve = require('rollup-plugin-node-resolve');  // https://github.com/rollup/rollup-plugin-node-resolve
 
 const plugins = [
-    nodeResolve({ jsnext: true, main: true }),
     commonjs({ include: 'node_modules/**' }),
+    nodeResolve({ jsnext: true, main: true }),
     eslint(),
     buble()
 ];
 
-const pkg = require('./package.json');
+const config = require('./package.json');
 
 module.exports = {
     entry: 'src/index.js',
-    dest: 'dist/progressive-carousel.js',
-    format: 'umd',
     exports: 'default',
     plugins,
-    moduleName: pkg.moduleName
+    targets: [
+        {
+            dest: config.main,
+            format: 'umd',
+            moduleName: config.moduleName
+        }, {
+            dest: config.module,
+            format: 'es'
+        }
+    ]
 };
