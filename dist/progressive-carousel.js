@@ -533,15 +533,14 @@ function Carousel(root) {
     }
 }
 
-var enhanceAll = function (context, selector) {
+var initializeAll = function (context) {
     if ( context === void 0 ) context = document;
-    if ( selector === void 0 ) selector = '[data-carousel]';
 
-    var elements = [].slice.call(context.querySelectorAll(selector));
+    var elements = [].slice.call(context.querySelectorAll('[data-carousel]'));
     return elements.map(function (element) { return new Carousel(element); });
 };
 
-var index = { enhanceAll: enhanceAll };
+var index = { initializeAll: initializeAll };
 
 return index;
 
