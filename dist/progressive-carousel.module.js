@@ -1,9 +1,3 @@
-(function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
-	typeof define === 'function' && define.amd ? define(factory) :
-	(global.Carousel = factory());
-}(this, (function () { 'use strict';
-
 function unwrapExports (x) {
 	return x && x.__esModule ? x['default'] : x;
 }
@@ -543,6 +537,4 @@ var enhanceAll = function (context, selector) {
 
 var index = { enhanceAll: enhanceAll };
 
-return index;
-
-})));
+export default index;
