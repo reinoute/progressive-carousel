@@ -17,13 +17,13 @@ A mobile friendly and progressive enhanced image carousel
 * Hardware accelerated animations (using CSS transform)
 * Lightweight (~10kb minified)
 * No JQuery dependency
-* Browser support
+* Browser support:
   * Browsers supporting [classList](http://caniuse.com/#feat=classlist) and [CSS transforms](http://caniuse.com/#feat=css-transitions): basically *IE10+* and all modern browsers.
   * On older browsers (and while JavaScript is loading), the browser will render an ordinary grid of images. Clicking an image will open the high resolution image.
 
 ## About
 
-Progressive Carousel has a **consistent user experience** across different screen sizes, and on portrait/landscape orientation: there is no predefined amount of images for each breakpoint. 
+Progressive Carousel has a consistent user experience across different screen sizes, and on portrait/landscape orientation: there is no predefined amount of images for each breakpoint. 
 
 On smaller screens, a tiny bit of the next and previous image is visible. This gives the user a hint that he can swipe the images left and right. 
 
@@ -116,13 +116,21 @@ The CSS file contains vendor prefixes. Consider using a build system with [autop
 ```javascript
 import Carousel from 'progressive-carousel';
 ```
-2. Initialize all carousels within the provided context (e.g. document or any other DOM element) and provide the name of the root selector (default: `[data-carousel]`).
+2. Then initialize all carousels (more than 1 is allowed):
 
 ```javascript
-Carousel.enhanceAll(document, '[data-carousel]');
+Carousel.initializeAll();
 ```
 
-When the carousel has been initialized, the images should be positioned side by side (in a 'film strip') and no longer in a grid.
+When the carousel has been initialized, the images should be positioned side by side (like a 'film strip') and no longer in a grid.
+
+By default, all carousels on the page are initialized. Optionally, you can provide a DOM element to scope the context where carousels appear in, e.g.:
+
+```javascript
+// initialize all carousels inside `#sidebar`
+const sidebar = document.getElementById('sidebar');
+Carousel.initializeAll(sidebar);
+```
 
 ## Future
 

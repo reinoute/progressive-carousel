@@ -453,9 +453,9 @@ function Carousel(root) {
     }
 }
 
-const enhanceAll = (context = document, selector = '[data-carousel]') => {
-    const elements = [].slice.call(context.querySelectorAll(selector));
+const initializeAll = (context = document) => {
+    const elements = [].slice.call(context.querySelectorAll('[data-carousel]'));
     return elements.map(element => new Carousel(element));
 };
 
-export default { enhanceAll };
+export default { initializeAll };
