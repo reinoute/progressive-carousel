@@ -134,7 +134,6 @@ Carousel.initializeAll(sidebar);
 
 ## Future
 
-- Simplify markup with listbox aria-attributes (a la Bootstrap Carousel)?
 - Lazy loading of images
 - Loading indicator (in particular in fullscreen)
 
@@ -142,6 +141,10 @@ Not planned:
 
 - Captions
 - Breadcrumbs / circles / progress indicators
+
+## Author
+
+Created and maintained by [reinout.com](https://www.reinout.com) 
 
 ## Resources
 
