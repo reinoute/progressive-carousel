@@ -144,7 +144,7 @@ Not planned:
 
 ## Author
 
-Created and maintained by [reinout.com](https://www.reinout.com) 
+Created and maintained by [reinout.com](http://www.reinout.com) 
 
 ## Resources
 
