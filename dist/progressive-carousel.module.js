@@ -141,6 +141,8 @@ function Carousel(root) {
         }.bind(this$1), 100);
     });
 
+    window.addEventListener('orientationchange', getItemWidthAndTranslateZ);
+
     root.addEventListener('click', function (event) {
         var isOverlayClicked = event.target === root;
 

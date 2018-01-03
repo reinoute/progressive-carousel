@@ -66,6 +66,8 @@ function Carousel(root) {
         }.bind(this), 100)
     });
 
+    window.addEventListener('orientationchange', getItemWidthAndTranslateZ);
+
     root.addEventListener('click', (event) => {
         const isOverlayClicked = event.target === root;
 
