@@ -129,7 +129,7 @@ function Carousel(root) {
     var firstImage = images[0];
     var firstImageLoaded = firstImage.complete && firstImage.naturalWidth !== 0;
     var DIRECTION = {LEFT: -1, INITIAL: 0, RIGHT: 1};
-    var sizesAttribute = firstImage.sizes; // assuming all images have the same sizes attribute
+    var sizesAttribute = null;
     var itemWidth = null;
     var itemTranslateX = null;
     var touchStartX = null;
@@ -210,13 +210,16 @@ function Carousel(root) {
         // when image has been loaded already, initialize carousel
         initialize();
     } else {
-        // ...or when it's still loading, add an event listener to it
+        // ...or when it's still loading, add an event listener to
+        // initialize the carousel later
         firstImage.addEventListener('load', function () { return initialize; });
     }
 
     function initialize() {
-
+        // get item width which is required for panning to work
         getItemWidthAndTranslateZ();
+        // saves the sizes attribute which is required when closing fullscreen
+        sizesAttribute = firstImage.sizes;
         // make the first visible item in the list focusable
         updateTabindex();
     }
@@ -508,6 +511,8 @@ function Carousel(root) {
         if (anchor && anchor.length > 0) {
             anchor[0].focus();
         }
+
+        images.forEach(function (image) { return image.sizes = sizesAttribute; });
     }
 
     function swapFallbackImage(image) {
