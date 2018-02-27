@@ -46,6 +46,7 @@ function Carousel(root) {
     const transitionEventName = getTransitionEndEventName();
     const transformPropertyName = getTransformPropertyName();
     const firstImage = images[0];
+    const firstImageLoaded = firstImage.complete && firstImage.naturalWidth !== 0;
     const DIRECTION = {LEFT: -1, INITIAL: 0, RIGHT: 1};
     const sizesAttribute = firstImage.sizes; // assuming all images have the same sizes attribute
     let itemWidth = null;
@@ -111,14 +112,6 @@ function Carousel(root) {
         anchor.addEventListener('click', onAnchorClick);
     });
 
-    firstImage.addEventListener('load', () => {
-        // we only get the properties of the first item, assuming
-        // that the other images have the same dimensions
-        getItemWidthAndTranslateZ();
-        // make the first visible item in the list focusable
-        updateTabindex();
-    });
-
     buttonNext.addEventListener('click', () => animate(DIRECTION.LEFT));
     buttonPrevious.addEventListener('click', () => animate(DIRECTION.RIGHT));
     buttonClose.addEventListener('click', closeFullscreen);
@@ -129,6 +122,24 @@ function Carousel(root) {
             closeFullscreen();
         }
     }, false);
+
+    // we only get the properties of the first image, assuming
+    // that the other images have the same dimensions and translateX
+    if (firstImageLoaded) {
+        // when image has been loaded already, initialize carousel
+        initialize();
+    } else {
+        // ...or when it's still loading, add an event listener to
+        // initialize the carousel later
+        firstImage.addEventListener('load', () => initialize);
+    }
+
+    function initialize() {
+
+        getItemWidthAndTranslateZ();
+        // make the first visible item in the list focusable
+        updateTabindex();
+    }
 
     function getTransitionEndEventName() {
         const element = document.createElement('div');

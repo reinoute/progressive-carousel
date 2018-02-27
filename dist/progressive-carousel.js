@@ -5,7 +5,7 @@
 }(this, (function () { 'use strict';
 
 function unwrapExports (x) {
-	return x && x.__esModule ? x['default'] : x;
+	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
 }
 
 function createCommonjsModule(fn, module) {
@@ -127,6 +127,7 @@ function Carousel(root) {
     var transitionEventName = getTransitionEndEventName();
     var transformPropertyName = getTransformPropertyName();
     var firstImage = images[0];
+    var firstImageLoaded = firstImage.complete && firstImage.naturalWidth !== 0;
     var DIRECTION = {LEFT: -1, INITIAL: 0, RIGHT: 1};
     var sizesAttribute = firstImage.sizes; // assuming all images have the same sizes attribute
     var itemWidth = null;
@@ -192,14 +193,6 @@ function Carousel(root) {
         anchor.addEventListener('click', onAnchorClick);
     });
 
-    firstImage.addEventListener('load', function () {
-        // we only get the properties of the first item, assuming
-        // that the other images have the same dimensions
-        getItemWidthAndTranslateZ();
-        // make the first visible item in the list focusable
-        updateTabindex();
-    });
-
     buttonNext.addEventListener('click', function () { return animate(DIRECTION.LEFT); });
     buttonPrevious.addEventListener('click', function () { return animate(DIRECTION.RIGHT); });
     buttonClose.addEventListener('click', closeFullscreen);
@@ -210,6 +203,23 @@ function Carousel(root) {
             closeFullscreen();
         }
     }, false);
+
+    // we only get the properties of the first image, assuming
+    // that the other images have the same dimensions and translateX
+    if (firstImageLoaded) {
+        // when image has been loaded already, initialize carousel
+        initialize();
+    } else {
+        // ...or when it's still loading, add an event listener to it
+        firstImage.addEventListener('load', function () { return initialize; });
+    }
+
+    function initialize() {
+
+        getItemWidthAndTranslateZ();
+        // make the first visible item in the list focusable
+        updateTabindex();
+    }
 
     function getTransitionEndEventName() {
         var element = document.createElement('div');
