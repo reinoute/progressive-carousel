@@ -85,6 +85,11 @@
 }
 
 .carousel.is-fullscreen .carousel-item {
+    /*
+     * Show item on 100% screen width. Once the nested fullscreen
+     * <img> has been loaded, it is stretched to this container.
+     */
+    width: 100%;
     /* in fullscreen, remove the spacing between items */
     margin-right: 0;
 }
