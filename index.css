@@ -85,6 +85,11 @@
 }
 
 .carousel.is-fullscreen .carousel-item {
+    /*
+     * Show item on 100% screen width. Once the nested fullscreen
+     * <img> has been loaded, it is stretched to this container.
+     */
+    width: 100%;
     /* in fullscreen, remove the spacing between items */
     margin-right: 0;
 }
@@ -97,8 +102,8 @@
 }
 
 .carousel.is-enhanced .carousel-img {
-    /* don't stretch img further than it's own natural width */
-    max-width: 100%;
+    /* restore max-width; use value from `sizes` attribute instead */
+    max-width: none;
     /* enable single-finger horizontal panning gestures */
     touch-action: pan-x;
     /* prevent accidentally selecting an image while dragging */
