@@ -511,8 +511,6 @@ function Carousel(root) {
         if (anchor && anchor.length > 0) {
             anchor[0].focus();
         }
-
-        images.forEach(function (image) { return image.sizes = sizesAttribute; });
     }
 
     function swapFallbackImage(image) {
