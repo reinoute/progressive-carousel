@@ -32,6 +32,6 @@
     "watchify": "^3.9.0"
   },
   "dependencies": {
-    "progressive-carousel": "^1.6.1"
+    "progressive-carousel": "^1.6.2"
   }
 }
