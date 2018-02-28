@@ -48,7 +48,7 @@ function Carousel(root) {
     const firstImage = images[0];
     const firstImageLoaded = firstImage.complete && firstImage.naturalWidth !== 0;
     const DIRECTION = {LEFT: -1, INITIAL: 0, RIGHT: 1};
-    let sizesAttribute = null;
+    let sizesAttribute = firstImage.sizes;
     let itemWidth = null;
     let itemTranslateX = null;
     let touchStartX = null;
@@ -137,8 +137,6 @@ function Carousel(root) {
     function initialize() {
         // get item width which is required for panning to work
         getItemWidthAndTranslateZ();
-        // saves the sizes attribute which is required when closing fullscreen
-        sizesAttribute = firstImage.sizes;
         // make the first visible item in the list focusable
         updateTabindex();
     }
